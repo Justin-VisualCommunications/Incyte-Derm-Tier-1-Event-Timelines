@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Incyte Derm: Tier 1 Event Schedules</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #273548;
+    --border: #334155;
+    --accent: #6366f1;
+    --accent2: #22d3ee;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --red: #ef4444;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --aad: #6366f1;
+    --aaaai: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; height: 56px; flex-wrap: nowrap; }
+  .nav-brand { display: flex; flex-direction: column; margin-right: auto; }
+  .nav-title { font-weight: 800; font-size: 1rem; color: var(--text); letter-spacing: .3px; line-height: 1.2; }
+  .nav-title span { color: var(--accent2); }
+  .nav-subtitle { font-size: .65rem; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
+  .tab-btn { padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: .82rem; font-weight: 600; background: transparent; color: var(--muted); transition: all .2s; white-space: nowrap; }
+  .tab-btn.active { background: var(--accent); color: #fff; }
+  .tab-btn:hover:not(.active) { background: var(--surface2); color: var(--text); }
+
+  /* MAIN */
+  main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* EVENT SELECTOR */
+  .event-selector { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .event-selector label { font-size: .8rem; color: var(--muted); margin-right: 4px; font-weight: 600; }
+  .event-btn { padding: 7px 18px; border-radius: 20px; border: 2px solid var(--border); cursor: pointer; font-size: .82rem; font-weight: 700; background: transparent; color: var(--muted); transition: all .2s; }
+  .event-btn.on.aad   { border-color: var(--aad);   background: rgba(99,102,241,.15);  color: #a5b4fc; }
+  .event-btn.on.aaaai { border-color: var(--aaaai);  background: rgba(16,185,129,.15);  color: #6ee7b7; }
+  .event-btn:hover:not(.on) { background: var(--surface2); color: var(--text); }
+
+  /* TODAY BANNERS — one per event */
+  .banners { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .today-banner { flex: 1; min-width: 280px; border-radius: 12px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .today-banner.aad   { background: linear-gradient(135deg,#1e293b,#1e2a4a); border: 1px solid var(--aad); }
+  .today-banner.aaaai { background: linear-gradient(135deg,#1e293b,#1a3530); border: 1px solid var(--aaaai); }
+  .banner-event-label { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+  .banner-event-label.aad   { color: #a5b4fc; }
+  .banner-event-label.aaaai { color: #6ee7b7; }
+  .banner-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; }
+  .banner-col { flex: 1; min-width: 140px; }
+  .banner-label { font-size: .65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .banner-value { font-size: 1.5rem; font-weight: 800; }
+  .banner-value.aad   { color: #a5b4fc; }
+  .banner-value.aaaai { color: #6ee7b7; }
+  .banner-value .unit { font-size: .8rem; font-weight: 400; color: var(--muted); }
+  .banner-next { font-size: .8rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .banner-next-label { font-size: .65rem; color: var(--muted); }
+
+  /* FILTER */
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .filter-bar label { font-size: .8rem; color: var(--muted); margin-right: 4px; }
+  .filter-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); cursor: pointer; font-size: .8rem; background: transparent; color: var(--muted); transition: all .2s; }
+  .filter-btn.on { border-color: var(--accent); color: var(--text); background: rgba(99,102,241,.15); }
+
+  /* TIMELINE */
+  .timeline-wrap { position: relative; padding-left: 24px; }
+  .timeline-line { position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--aad), var(--aaaai), var(--accent4)); border-radius: 2px; }
+  .timeline-section-header { font-size: .68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 20px 0 8px 12px; display: flex; align-items: center; gap: 8px; }
+  .timeline-section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .tl-item { display: flex; align-items: flex-start; gap: 16px; padding: 11px 14px; margin-bottom: 5px; border-radius: 10px; border: 1px solid transparent; transition: all .2s; position: relative; }
+  .tl-item:hover { background: var(--surface2); border-color: var(--border); }
+  .tl-dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; position: relative; left: -30px; }
+  .tl-item.aad-item   .tl-dot { background: var(--aad); }
+  .tl-item.aaaai-item .tl-dot { background: var(--aaaai); }
+  .tl-item.past       .tl-dot { background: var(--muted); }
+  .tl-item.soon.aad-item   .tl-dot { background: var(--aad);   box-shadow: 0 0 0 4px rgba(99,102,241,.25); }
+  .tl-item.soon.aaaai-item .tl-dot { background: var(--aaaai); box-shadow: 0 0 0 4px rgba(16,185,129,.25); }
+  .tl-item.today-item .tl-dot { animation: pulse 2s infinite; }
+  .tl-content { flex: 1; margin-left: -14px; }
+  .tl-event-tag { display: inline-block; font-size: .6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 1px 7px; border-radius: 10px; margin-bottom: 3px; }
+  .tl-event-tag.aad   { background: rgba(99,102,241,.2);  color: #a5b4fc; }
+  .tl-event-tag.aaaai { background: rgba(16,185,129,.15); color: #6ee7b7; }
+  .tl-phase { font-size: .62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 2px; }
+  .tl-name { font-size: .92rem; font-weight: 600; color: var(--text); }
+  .tl-date { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+  .tl-countdown { margin-left: auto; text-align: right; flex-shrink: 0; }
+  .tl-days { font-size: 1.25rem; font-weight: 800; }
+  .tl-days.past     { color: var(--muted); }
+  .tl-days.soon-aad   { color: var(--aad); }
+  .tl-days.soon-aaaai { color: var(--aaaai); }
+  .tl-days.upcoming-aad   { color: #a5b4fc; }
+  .tl-days.upcoming-aaaai { color: #6ee7b7; }
+  .tl-days.today-c { color: var(--accent2); }
+  .tl-days-label { font-size: .62rem; color: var(--muted); text-transform: uppercase; }
+  .today-marker { background: rgba(34,211,238,.06); border: 1px solid rgba(34,211,238,.35) !important; }
+  .today-badge { display: inline-block; background: rgba(34,211,238,.2); color: #67e8f9; font-size: .6rem; padding: 1px 7px; border-radius: 10px; font-weight: 700; margin-left: 5px; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+
+  /* CALENDAR */
+  .cal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .cal-nav-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 1.1rem; transition: all .2s; }
+  .cal-nav-btn:hover { background: var(--surface2); }
+  .cal-month-label { font-size: 1.15rem; font-weight: 700; flex: 1; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-day-header { text-align: center; font-size: .68rem; font-weight: 700; text-transform: uppercase; color: var(--muted); padding: 5px 0; }
+  .cal-cell { min-height: 78px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 5px; }
+  .cal-cell:hover { border-color: var(--accent); }
+  .cal-cell.other-month { opacity: .3; }
+  .cal-cell.today-cell { border-color: var(--accent2); background: rgba(34,211,238,.05); }
+  .cal-cell.has-events { border-color: rgba(99,102,241,.5); }
+  .cal-num { font-size: .78rem; font-weight: 600; color: var(--muted); margin-bottom: 3px; }
+  .cal-cell.today-cell .cal-num { color: var(--accent2); font-weight: 800; }
+  .cal-event { font-size: .58rem; padding: 1px 4px; border-radius: 3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .cal-event.aad   { background: rgba(99,102,241,.3);  color: #c7d2fe; }
+  .cal-event.aaaai { background: rgba(16,185,129,.25); color: #a7f3d0; }
+
+  /* CARDS */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 14px; }
+  .milestone-card { background: var(--surface); border-radius: 12px; padding: 18px; transition: all .2s; }
+  .milestone-card.aad-card   { border: 1px solid rgba(99,102,241,.4); }
+  .milestone-card.aaaai-card { border: 1px solid rgba(16,185,129,.35); }
+  .milestone-card:hover { transform: translateY(-2px); }
+  .milestone-card.aad-card:hover   { border-color: var(--aad); }
+  .milestone-card.aaaai-card:hover { border-color: var(--aaaai); }
+  .milestone-card.past { opacity: .52; }
+  .card-event-tag { font-size: .6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+  .card-event-tag.aad   { color: #a5b4fc; }
+  .card-event-tag.aaaai { color: #6ee7b7; }
+  .card-phase { font-size: .62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+  .card-name { font-size: .9rem; font-weight: 600; margin-bottom: 6px; line-height: 1.3; min-height: 36px; }
+  .card-date { font-size: .78rem; color: var(--muted); margin-bottom: 10px; }
+  .card-progress-wrap { background: var(--bg); border-radius: 20px; height: 5px; overflow: hidden; margin-bottom: 10px; }
+  .card-progress { height: 100%; border-radius: 20px; }
+  .card-days { font-size: 1.9rem; font-weight: 800; }
+  .card-days.aad-color   { color: #a5b4fc; }
+  .card-days.aaaai-color { color: #6ee7b7; }
+  .card-days.soon-color  { color: var(--accent3); }
+  .card-days.past-num    { color: var(--muted); font-size: 1.2rem; }
+  .card-days-label { font-size: .72rem; color: var(--muted); }
+
+  /* GANTT */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt-table { border-collapse: collapse; width: 100%; min-width: 860px; }
+  .gantt-table th { background: var(--surface); padding: 7px 10px; font-size: .68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .gantt-table td { padding: 6px 10px; border-bottom: 1px solid rgba(51,65,85,.35); font-size: .8rem; vertical-align: middle; }
+  .gantt-bar-cell { min-width: 380px; padding: 5px 10px; }
+  .gantt-bar-bg { background: var(--surface2); border-radius: 4px; height: 19px; position: relative; overflow: hidden; }
+  .gantt-bar { height: 100%; border-radius: 4px; position: absolute; left: 0; display: flex; align-items: center; padding: 0 5px; font-size: .62rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; }
+  .gantt-today-line { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--accent2); z-index: 5; }
+  .gantt-row.past td { opacity: .55; }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    nav { flex-wrap: wrap; height: auto; padding: 8px 12px; }
+    main { padding: 12px; }
+    .cal-cell { min-height: 54px; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .banners { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-title">Incyte <span>Derm</span></div>
+    <div class="nav-subtitle">Tier 1 Event Schedules</div>
+  </div>
+  <button class="tab-btn active" onclick="switchTab('timeline', event)">📅 Timeline</button>
+  <button class="tab-btn" onclick="switchTab('calendar', event)">🗓 Calendar</button>
+  <button class="tab-btn" onclick="switchTab('cards', event)">⏱ Countdowns</button>
+  <button class="tab-btn" onclick="switchTab('gantt', event)">📊 Gantt</button>
+</nav>
+
+<main>
+
+<!-- EVENT SELECTOR -->
+<div class="event-selector">
+  <label>Show Event:</label>
+  <button class="event-btn aad on"   id="ev-aad"   onclick="toggleEvent('aad')">AAD 2027 &nbsp;·&nbsp; Mar 12</button>
+  <button class="event-btn aaaai on" id="ev-aaaai" onclick="toggleEvent('aaaai')">AAAAI 2027 &nbsp;·&nbsp; Feb 12</button>
+</div>
+
+<!-- BANNERS -->
+<div class="banners" id="bannersWrap">
+  <!-- AAD Banner -->
+  <div class="today-banner aad" id="banner-aad">
+    <div class="banner-event-label aad">AAD 2027 &mdash; Event Installation: March 12, 2027</div>
+    <div class="banner-row">
+      <div class="banner-col">
+        <div class="banner-label">Days Until Event</div>
+        <div class="banner-value aad" id="aad-countdown">—</div>
+      </div>
+      <div class="banner-col">
+        <div class="banner-next-label">⚡ Next Milestone</div>
+        <div class="banner-next" id="aad-next-name">—</div>
+        <div class="banner-value aad" style="font-size:1.1rem" id="aad-next-days">—</div>
+      </div>
+    </div>
+  </div>
+  <!-- AAAAI Banner -->
+  <div class="today-banner aaaai" id="banner-aaaai">
+    <div class="banner-event-label aaaai">AAAAI 2027 &mdash; Event Installation: February 12, 2027</div>
+    <div class="banner-row">
+      <div class="banner-col">
+        <div class="banner-label">Days Until Event</div>
+        <div class="banner-value aaaai" id="aaaai-countdown">—</div>
+      </div>
+      <div class="banner-col">
+        <div class="banner-next-label">⚡ Next Milestone</div>
+        <div class="banner-next" id="aaaai-next-name">—</div>
+        <div class="banner-value aaaai" style="font-size:1.1rem" id="aaaai-next-days">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="filter-bar">
+  <label>Filter:</label>
+  <button class="filter-btn on" id="f-upcoming" onclick="toggleUpcoming()">Upcoming Only</button>
+</div>
+
+<!-- TIMELINE VIEW -->
+<div class="view active" id="view-timeline">
+  <div class="timeline-wrap">
+    <div class="timeline-line"></div>
+    <div id="timelineContent"></div>
+  </div>
+</div>
+
+<!-- CALENDAR VIEW -->
+<div class="view" id="view-calendar">
+  <div class="cal-header">
+    <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+    <div class="cal-month-label" id="calMonthLabel"></div>
+    <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+    <button class="filter-btn on" style="margin-left:auto" onclick="goToToday()">Today</button>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+</div>
+
+<!-- COUNTDOWN CARDS VIEW -->
+<div class="view" id="view-cards">
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<!-- GANTT VIEW -->
+<div class="view" id="view-gantt">
+  <div class="gantt-wrap">
+    <table class="gantt-table" id="ganttTable"></table>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== DATA =====
+const EVENTS = {
+  aad: {
+    key: 'aad',
+    label: 'AAD 2027',
+    installDate: '2027-03-12',
+    color: '#6366f1',
+    milestones: [
+      { phase: 'Design/Creative Phase', name: 'Project Kickoff',                                       date: '2026-07-27', weeks: 30 },
+      { phase: 'Design/Creative Phase', name: 'Design (Concept Selection)',                            date: '2026-08-28', weeks: 26 },
+      { phase: 'Design/Creative Phase', name: 'Design Revision #1',                                    date: '2026-09-11', weeks: 24 },
+      { phase: 'Design/Creative Phase', name: 'Design Revision #2',                                    date: '2026-09-25', weeks: 22 },
+      { phase: 'Design/Creative Phase', name: 'Design & Estimate Approval',                            date: '2026-10-09', weeks: 20 },
+      { phase: 'Artwork/Content Phase', name: 'Engineering Elevations → Client',                       date: '2026-10-30', weeks: 17 },
+      { phase: 'Artwork/Content Phase', name: 'All Initial Artwork Due',                               date: '2026-12-11', weeks: 13 },
+      { phase: 'Artwork/Content Phase', name: 'Allowance for 6 Weeks of Regulatory Revisions',        date: '2026-12-11', weeks: 13 },
+      { phase: 'Artwork/Content Phase', name: 'Final Approved Art',                                    date: '2027-01-22', weeks: 7  },
+      { phase: 'Artwork/Content Phase', name: 'Graphic Layout Approval',                               date: '2027-01-29', weeks: 6  },
+      { phase: 'Artwork/Content Phase', name: 'Digital Content Due',                                   date: '2027-02-12', weeks: 4  },
+      { phase: 'Final Logistics',       name: 'Literature Shipped to Visual',                          date: '2027-02-19', weeks: 3  },
+      { phase: 'Final Logistics',       name: 'Shipping to Event',                                     date: '2027-02-26', weeks: 2  },
+      { phase: 'Final Logistics',       name: 'Event Installation',                                    date: '2027-03-12', weeks: 0  },
+    ]
+  },
+  aaaai: {
+    key: 'aaaai',
+    label: 'AAAAI 2027',
+    installDate: '2027-02-12',
+    color: '#10b981',
+    milestones: [
+      { phase: 'Design/Creative Phase', name: 'Project Kickoff',                                       date: '2026-10-02', weeks: 19 },
+      { phase: 'Design/Creative Phase', name: 'Design & Estimate Approval',                            date: '2026-10-30', weeks: 15 },
+      { phase: 'Artwork/Content Phase', name: 'Engineering Elevations → Client',                       date: '2026-11-06', weeks: 14 },
+      { phase: 'Artwork/Content Phase', name: 'All Artwork Due (Design Update)',                       date: '2026-12-04', weeks: 10 },
+      { phase: 'Artwork/Content Phase', name: 'Regulatory Submission',                                 date: '2026-12-11', weeks: 9  },
+      { phase: 'Artwork/Content Phase', name: 'Final Approved Art',                                    date: '2027-01-08', weeks: 5  },
+      { phase: 'Artwork/Content Phase', name: 'Graphic Layout Approval',                               date: '2027-01-15', weeks: 4  },
+      { phase: 'Artwork/Content Phase', name: 'Digital Content Due',                                   date: '2027-01-15', weeks: 4  },
+      { phase: 'Final Logistics',       name: 'Literature Shipped to Visual',                          date: '2027-01-22', weeks: 3  },
+      { phase: 'Final Logistics',       name: 'Shipping to Event',                                     date: '2027-01-29', weeks: 2  },
+      { phase: 'Final Logistics',       name: 'Event Installation',                                    date: '2027-02-12', weeks: 0  },
+    ]
+  }
+};
+
+// Parse dates
+Object.values(EVENTS).forEach(ev => {
+  const [iy,im,id] = ev.installDate.split('-').map(Number);
+  ev.installDateObj = new Date(iy, im-1, id);
+  ev.milestones.forEach(m => {
+    const [y,mo,d] = m.date.split('-').map(Number);
+    m.dateObj = new Date(y, mo-1, d);
+    m.event = ev.key;
+  });
+});
+
+// ===== STATE =====
+const today = new Date(); today.setHours(0,0,0,0);
+let calYear = today.getFullYear(), calMonth = today.getMonth();
+let showEvents = { aad: true, aaaai: true };
+let showUpcomingOnly = true;
+
+// ===== HELPERS =====
+function daysDiff(d) { return Math.round((d - today) / 86400000); }
+function fmtShort(d) { return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function statusOf(diff) {
+  if (diff < 0)   return 'past';
+  if (diff === 0) return 'today';
+  if (diff <= 30) return 'soon';
+  return 'upcoming';
+}
+
+// ===== BANNERS =====
+function updateBanners() {
+  Object.values(EVENTS).forEach(ev => {
+    const banner = document.getElementById(`banner-${ev.key}`);
+    banner.style.display = showEvents[ev.key] ? '' : 'none';
+    const d = daysDiff(ev.installDateObj);
+    document.getElementById(`${ev.key}-countdown`).innerHTML =
+      d >= 0 ? `${d} <span class="unit">days away</span>` : `<span style="color:var(--muted)">Completed</span>`;
+    const next = ev.milestones.filter(m => daysDiff(m.dateObj) > 0).sort((a,b)=>a.dateObj-b.dateObj)[0];
+    if (next) {
+      const nd = daysDiff(next.dateObj);
+      document.getElementById(`${ev.key}-next-name`).textContent = next.name;
+      document.getElementById(`${ev.key}-next-days`).innerHTML = `${nd} <span class="unit">days away</span>`;
+    } else {
+      document.getElementById(`${ev.key}-next-name`).textContent = 'All milestones complete';
+      document.getElementById(`${ev.key}-next-days`).textContent = '';
+    }
+  });
+}
+
+// ===== FILTERED MILESTONES =====
+function getFiltered() {
+  let all = [];
+  Object.values(EVENTS).forEach(ev => {
+    if (!showEvents[ev.key]) return;
+    ev.milestones.forEach(m => {
+      if (showUpcomingOnly && daysDiff(m.dateObj) < 0) return;
+      all.push(m);
+    });
+  });
+  return all.sort((a,b) => a.dateObj - b.dateObj);
+}
+
+// ===== TIMELINE =====
+function renderTimeline() {
+  const list = getFiltered();
+  let html = '', lastKey = null;
+  list.forEach(m => {
+    const sectionKey = m.event + '|' + m.phase;
+    if (sectionKey !== lastKey) {
+      lastKey = sectionKey;
+      const evLabel = EVENTS[m.event].label;
+      html += `<div class="timeline-section-header" style="color:${m.event==='aad'?'#a5b4fc':'#6ee7b7'}">${evLabel} — ${m.phase}</div>`;
+    }
+    const diff = daysDiff(m.dateObj);
+    const status = statusOf(diff);
+    const isToday = status === 'today';
+    let daysClass = 'upcoming-' + m.event;
+    if (status === 'past')  daysClass = 'past';
+    if (status === 'soon')  daysClass = 'soon-' + m.event;
+    if (isToday)            daysClass = 'today-c';
+
+    let daysHtml = '';
+    if (status === 'past')  daysHtml = `<div class="tl-days past">${Math.abs(diff)}</div><div class="tl-days-label">days ago</div>`;
+    else if (isToday)       daysHtml = `<div class="tl-days today-c">TODAY</div>`;
+    else                    daysHtml = `<div class="tl-days ${daysClass}">${diff}</div><div class="tl-days-label">days left</div>`;
+
+    html += `
+      <div class="tl-item ${m.event}-item ${status==='past'?'past':''} ${isToday?'today-item today-marker':''} ${status==='soon'?'soon':''}">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <span class="tl-event-tag ${m.event}">${EVENTS[m.event].label}</span>
+          <div class="tl-phase">${m.phase}</div>
+          <div class="tl-name">${m.name}${isToday?'<span class="today-badge">TODAY</span>':''}</div>
+          <div class="tl-date">${fmtShort(m.dateObj)}${m.weeks>0?' · '+m.weeks+' wks to event':' · Event day'}</div>
+        </div>
+        <div class="tl-countdown">${daysHtml}</div>
+      </div>`;
+  });
+  if (!html) html = '<div style="color:var(--muted);padding:24px;text-align:center">No milestones match current filters.</div>';
+  document.getElementById('timelineContent').innerHTML = html;
+}
+
+// ===== CALENDAR =====
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function renderCalendar() {
+  document.getElementById('calMonthLabel').textContent = `${MONTHS[calMonth]} ${calYear}`;
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+
+  const evMap = {};
+  Object.values(EVENTS).forEach(ev => {
+    if (!showEvents[ev.key]) return;
+    ev.milestones.forEach(m => {
+      const key = `${m.dateObj.getFullYear()}-${m.dateObj.getMonth()}-${m.dateObj.getDate()}`;
+      if (!evMap[key]) evMap[key] = [];
+      evMap[key].push(m);
+    });
+  });
+
+  let html = DAYS.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+  for (let i = firstDay-1; i >= 0; i--)
+    html += `<div class="cal-cell other-month"><div class="cal-num">${daysInPrev-i}</div></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d===today.getDate() && calMonth===today.getMonth() && calYear===today.getFullYear();
+    const events  = evMap[`${calYear}-${calMonth}-${d}`] || [];
+    html += `<div class="cal-cell ${isToday?'today-cell':''} ${events.length?'has-events':''}">
+      <div class="cal-num">${d}${isToday?' ●':''}</div>
+      ${events.slice(0,3).map(m=>`<div class="cal-event ${m.event}" title="${EVENTS[m.event].label}: ${m.name}">${m.name}</div>`).join('')}
+      ${events.length>3?`<div class="cal-event" style="color:var(--muted)">+${events.length-3} more</div>`:''}
+    </div>`;
+  }
+  const rem = (firstDay+daysInMonth)%7===0?0:7-(firstDay+daysInMonth)%7;
+  for (let i = 1; i <= rem; i++)
+    html += `<div class="cal-cell other-month"><div class="cal-num">${i}</div></div>`;
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth < 0)  { calMonth=11; calYear--; }
+  if (calMonth > 11) { calMonth=0;  calYear++; }
+  renderCalendar();
+}
+function goToToday() { calYear=today.getFullYear(); calMonth=today.getMonth(); renderCalendar(); }
+
+// ===== CARDS =====
+function renderCards() {
+  const list = getFiltered().sort((a,b)=>{
+    const da=daysDiff(a.dateObj), db=daysDiff(b.dateObj);
+    if (da>=0 && db<0) return -1;
+    if (da<0 && db>=0) return 1;
+    return a.dateObj-b.dateObj;
+  });
+
+  const allDates = Object.values(EVENTS).flatMap(ev=>ev.milestones.map(m=>m.dateObj));
+  const minDate  = new Date(Math.min(...allDates));
+
+  let html = '';
+  list.forEach(m => {
+    const diff   = daysDiff(m.dateObj);
+    const status = statusOf(diff);
+    const prog   = Math.min(100, Math.max(0, ((today-minDate)/(m.dateObj-minDate))*100));
+
+    let daysHtml = '';
+    if (status==='past')       daysHtml = `<div class="card-days past-num">${Math.abs(diff)} days ago</div>`;
+    else if (status==='today') daysHtml = `<div class="card-days" style="color:var(--accent2)">TODAY!</div>`;
+    else {
+      const cls = status==='soon' ? 'soon-color' : `${m.event}-color`;
+      daysHtml = `<div class="card-days ${cls}">${diff}</div><div class="card-days-label">days remaining</div>`;
+    }
+
+    html += `
+      <div class="milestone-card ${m.event}-card ${status==='past'?'past':''}">
+        <div class="card-event-tag ${m.event}">${EVENTS[m.event].label}</div>
+        <div class="card-phase">${m.phase}</div>
+        <div class="card-name">${m.name}</div>
+        <div class="card-date">${fmtShort(m.dateObj)}</div>
+        <div class="card-progress-wrap">
+          <div class="card-progress" style="width:${status==='past'?100:prog}%;background:${EVENTS[m.event].color}"></div>
+        </div>
+        ${daysHtml}
+      </div>`;
+  });
+  document.getElementById('cardsGrid').innerHTML = html || '<div style="color:var(--muted);padding:24px">No milestones match current filters.</div>';
+}
+
+// ===== GANTT =====
+function renderGantt() {
+  const list = Object.values(EVENTS).flatMap(ev => showEvents[ev.key] ? ev.milestones : []).sort((a,b)=>a.dateObj-b.dateObj);
+  if (!list.length) { document.getElementById('ganttTable').innerHTML='<tr><td style="color:var(--muted);padding:20px">No data.</td></tr>'; return; }
+
+  const allDates = list.map(m=>m.dateObj);
+  const minD = new Date(Math.min(...allDates)); minD.setDate(minD.getDate()-14);
+  const maxD = new Date(Math.max(...allDates)); maxD.setDate(maxD.getDate()+14);
+  const span = maxD-minD;
+  const todayPct = Math.min(100, Math.max(0, ((today-minD)/span)*100));
+
+  let html = `<thead><tr>
+    <th style="width:90px">Event</th>
+    <th style="width:150px">Phase</th>
+    <th style="width:220px">Milestone</th>
+    <th style="width:100px">Date</th>
+    <th class="gantt-bar-cell">${minD.toLocaleDateString('en-US',{month:'short',year:'numeric'})} → ${maxD.toLocaleDateString('en-US',{month:'short',year:'numeric'})}</th>
+  </tr></thead><tbody>`;
+
+  list.forEach(m => {
+    const diff  = daysDiff(m.dateObj);
+    const isPast = diff < 0;
+    const pct   = Math.min(100, Math.max(0, ((m.dateObj-minD)/span)*100));
+    html += `<tr class="gantt-row ${isPast?'past':''}">
+      <td><span style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:${m.event==='aad'?'#a5b4fc':'#6ee7b7'}">${EVENTS[m.event].label}</span></td>
+      <td style="font-size:.72rem;color:var(--muted)">${m.phase}</td>
+      <td style="font-size:.8rem">${m.name}</td>
+      <td style="font-size:.75rem;color:var(--muted);white-space:nowrap">${fmtShort(m.dateObj)}</td>
+      <td class="gantt-bar-cell">
+        <div class="gantt-bar-bg">
+          <div class="gantt-today-line" style="left:${todayPct}%"></div>
+          <div class="gantt-bar" style="width:${Math.max(2,pct)}%;background:${EVENTS[m.event].color};opacity:${isPast?.5:1}">
+            ${isPast?'✓':diff+'d'}
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody>';
+  document.getElementById('ganttTable').innerHTML = html;
+}
+
+// ===== CONTROLS =====
+function toggleEvent(key) {
+  // prevent turning off both
+  const otherKey = key==='aad'?'aaaai':'aad';
+  if (showEvents[key] && !showEvents[otherKey]) return; // must keep at least one
+  showEvents[key] = !showEvents[key];
+  document.getElementById(`ev-${key}`).classList.toggle('on', showEvents[key]);
+  updateBanners();
+  renderAll();
+}
+
+function toggleUpcoming() {
+  showUpcomingOnly = !showUpcomingOnly;
+  document.getElementById('f-upcoming').classList.toggle('on', showUpcomingOnly);
+  renderTimeline();
+  renderCards();
+}
+
+function switchTab(name, e) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`view-${name}`).classList.add('active');
+  if (e && e.target) e.target.classList.add('active');
+}
+
+function renderAll() {
+  renderTimeline();
+  renderCalendar();
+  renderCards();
+  renderGantt();
+}
+
+// ===== INIT =====
+updateBanners();
+renderAll();
+
+// Jump calendar to next upcoming milestone
+const allUpcoming = Object.values(EVENTS).flatMap(ev=>ev.milestones).filter(m=>daysDiff(m.dateObj)>=0).sort((a,b)=>a.dateObj-b.dateObj);
+if (allUpcoming.length) { calYear=allUpcoming[0].dateObj.getFullYear(); calMonth=allUpcoming[0].dateObj.getMonth(); renderCalendar(); }
+</script>
+</body>
+</html>
