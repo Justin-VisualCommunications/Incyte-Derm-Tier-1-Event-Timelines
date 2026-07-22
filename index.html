@@ -23,7 +23,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* NAV */
   nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; height: 56px; }
   .nav-brand { display: flex; flex-direction: column; margin-right: auto; flex-shrink: 0; }
   .nav-title { font-weight: 800; font-size: .98rem; color: var(--text); letter-spacing: .3px; line-height: 1.2; }
@@ -37,7 +36,6 @@
   .view { display: none; }
   .view.active { display: block; }
 
-  /* EVENT SELECTOR */
   .event-selector { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
   .event-selector label { font-size: .78rem; color: var(--muted); font-weight: 600; }
   .event-btn { padding: 6px 16px; border-radius: 20px; border: 2px solid var(--border); cursor: pointer; font-size: .8rem; font-weight: 700; background: transparent; color: var(--muted); transition: all .2s; }
@@ -46,7 +44,6 @@
   .event-btn.on.acaai { border-color: var(--acaai);  background: rgba(245,158,11,.13);  color: #fde68a; }
   .event-btn:hover:not(.on) { background: var(--surface2); color: var(--text); }
 
-  /* BANNERS */
   .banners { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
   .today-banner { flex: 1; min-width: 240px; border-radius: 12px; padding: 15px 18px; }
   .today-banner.aad   { background: linear-gradient(135deg,#1e293b,#1e2a4a); border: 1px solid var(--aad); }
@@ -66,13 +63,11 @@
   .banner-val.acaai { color: #fde68a; }
   .banner-next { font-size: .78rem; font-weight: 600; color: var(--text); margin-top: 2px; }
 
-  /* FILTER */
   .filter-bar { display: flex; gap: 10px; margin-bottom: 18px; align-items: center; flex-wrap: wrap; }
   .filter-bar label { font-size: .78rem; color: var(--muted); }
   .filter-btn { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border); cursor: pointer; font-size: .78rem; background: transparent; color: var(--muted); transition: all .2s; }
   .filter-btn.on { border-color: var(--accent); color: var(--text); background: rgba(99,102,241,.13); }
 
-  /* TIMELINE */
   .timeline-wrap { position: relative; padding-left: 22px; }
   .timeline-line { position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom,var(--aad),var(--aaaai),var(--acaai)); border-radius: 2px; }
   .tl-section-hdr { font-size: .65rem; text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 7px 10px; display: flex; align-items: center; gap: 8px; }
@@ -98,20 +93,19 @@
   .tl-date { font-size: .76rem; color: var(--muted); margin-top: 1px; }
   .tl-cd { margin-left: auto; text-align: right; flex-shrink: 0; }
   .tl-days { font-size: 1.2rem; font-weight: 800; }
-  .tl-days.past      { color: var(--muted); }
-  .tl-days.aad-c     { color: #a5b4fc; }
-  .tl-days.aaaai-c   { color: #6ee7b7; }
-  .tl-days.acaai-c   { color: #fde68a; }
-  .tl-days.soon-aad  { color: var(--aad); }
-  .tl-days.soon-aaaai{ color: var(--aaaai); }
-  .tl-days.soon-acaai{ color: var(--acaai); }
-  .tl-days.today-c   { color: var(--accent2); }
+  .tl-days.past       { color: var(--muted); }
+  .tl-days.aad-c      { color: #a5b4fc; }
+  .tl-days.aaaai-c    { color: #6ee7b7; }
+  .tl-days.acaai-c    { color: #fde68a; }
+  .tl-days.soon-aad   { color: var(--aad); }
+  .tl-days.soon-aaaai { color: var(--aaaai); }
+  .tl-days.soon-acaai { color: var(--acaai); }
+  .tl-days.today-c    { color: var(--accent2); }
   .tl-dl { font-size: .6rem; color: var(--muted); text-transform: uppercase; }
   .today-marker { background: rgba(34,211,238,.05); border: 1px solid rgba(34,211,238,.3) !important; }
   .today-badge { display: inline-block; background: rgba(34,211,238,.2); color: #67e8f9; font-size: .58rem; padding: 1px 6px; border-radius: 8px; font-weight: 700; margin-left: 4px; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
 
-  /* CALENDAR */
   .cal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
   .cal-nav-btn { width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 1rem; }
   .cal-nav-btn:hover { background: var(--surface2); }
@@ -130,7 +124,6 @@
   .cal-ev.aaaai { background: rgba(16,185,129,.22);  color: #a7f3d0; }
   .cal-ev.acaai { background: rgba(245,158,11,.22);  color: #fef3c7; }
 
-  /* CARDS */
   .cards-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(248px,1fr)); gap: 13px; }
   .mc { border-radius: 11px; padding: 16px; transition: all .2s; }
   .mc.aad-card   { background: var(--surface); border: 1px solid rgba(99,102,241,.38); }
@@ -158,7 +151,6 @@
   .mc-days.past-n  { color: var(--muted); font-size: 1.15rem; }
   .mc-dl { font-size: .7rem; color: var(--muted); }
 
-  /* GANTT */
   .gantt-wrap { overflow-x: auto; }
   .gt { border-collapse: collapse; width: 100%; min-width: 860px; }
   .gt th { background: var(--surface); padding: 7px 9px; font-size: .65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
@@ -193,7 +185,6 @@
 
 <main>
 
-<!-- EVENT SELECTOR -->
 <div class="event-selector">
   <label>Show Event:</label>
   <button class="event-btn aad on"   id="ev-aad"   onclick="toggleEvent('aad')">AAD 2027 &nbsp;·&nbsp; Mar 12</button>
@@ -201,7 +192,6 @@
   <button class="event-btn acaai on" id="ev-acaai" onclick="toggleEvent('acaai')">ACAAI 2026 &nbsp;·&nbsp; Nov 6</button>
 </div>
 
-<!-- BANNERS -->
 <div class="banners" id="bannersWrap">
   <div class="today-banner aad" id="banner-aad">
     <div class="banner-event-label aad">AAD 2027 — Event Installation: March 12, 2027</div>
@@ -247,13 +237,11 @@
   </div>
 </div>
 
-<!-- FILTER -->
 <div class="filter-bar">
   <label>Filter:</label>
   <button class="filter-btn on" id="f-upcoming" onclick="toggleUpcoming()">Upcoming Only</button>
 </div>
 
-<!-- TIMELINE VIEW -->
 <div class="view active" id="view-timeline">
   <div class="timeline-wrap">
     <div class="timeline-line"></div>
@@ -261,7 +249,6 @@
   </div>
 </div>
 
-<!-- CALENDAR VIEW -->
 <div class="view" id="view-calendar">
   <div class="cal-header">
     <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
@@ -272,12 +259,10 @@
   <div class="cal-grid" id="calGrid"></div>
 </div>
 
-<!-- CARDS VIEW -->
 <div class="view" id="view-cards">
   <div class="cards-grid" id="cardsGrid"></div>
 </div>
 
-<!-- GANTT VIEW -->
 <div class="view" id="view-gantt">
   <div class="gantt-wrap">
     <table class="gt" id="ganttTable"></table>
@@ -287,61 +272,61 @@
 </main>
 
 <script>
+// All "weeks" values are calendar-accurate: round((installDate - milestoneDate).days / 7)
 const EVENTS = {
   aad: {
     key:'aad', label:'AAD 2027', installDate:'2027-03-12', color:'#6366f1',
     milestones:[
-      {phase:'Design/Creative Phase', name:'Project Kickoff',                                    date:'2026-07-27', weeks:30},
-      {phase:'Design/Creative Phase', name:'Design (Concept Selection)',                         date:'2026-08-28', weeks:26},
-      {phase:'Design/Creative Phase', name:'Design Revision #1',                                 date:'2026-09-11', weeks:24},
-      {phase:'Design/Creative Phase', name:'Design Revision #2',                                 date:'2026-09-25', weeks:22},
-      {phase:'Design/Creative Phase', name:'Design & Estimate Approval',                         date:'2026-10-09', weeks:20},
-      {phase:'Artwork/Content Phase', name:'Engineering Elevations → Client',                    date:'2026-10-30', weeks:17},
-      {phase:'Artwork/Content Phase', name:'All Initial Artwork Due',                            date:'2026-12-11', weeks:13},
-      {phase:'Artwork/Content Phase', name:'Allowance for 6 Wks Regulatory Revisions',          date:'2026-12-11', weeks:13},
-      {phase:'Artwork/Content Phase', name:'Final Approved Art',                                 date:'2027-01-22', weeks:7},
-      {phase:'Artwork/Content Phase', name:'Graphic Layout Approval',                            date:'2027-01-29', weeks:6},
-      {phase:'Artwork/Content Phase', name:'Digital Content Due',                                date:'2027-02-12', weeks:4},
-      {phase:'Final Logistics',       name:'Literature Shipped to Visual',                       date:'2027-02-19', weeks:3},
-      {phase:'Final Logistics',       name:'Shipping to Event',                                  date:'2027-02-26', weeks:2},
-      {phase:'Final Logistics',       name:'Event Installation',                                 date:'2027-03-12', weeks:0},
+      {phase:'Design/Creative Phase', name:'Project Kickoff',                                 date:'2026-07-27', weeks:33},
+      {phase:'Design/Creative Phase', name:'Design (Concept Selection)',                      date:'2026-08-28', weeks:28},
+      {phase:'Design/Creative Phase', name:'Design Revision #1',                              date:'2026-09-11', weeks:26},
+      {phase:'Design/Creative Phase', name:'Design Revision #2',                              date:'2026-09-25', weeks:24},
+      {phase:'Design/Creative Phase', name:'Design & Estimate Approval',                      date:'2026-10-09', weeks:22},
+      {phase:'Artwork/Content Phase', name:'Engineering Elevations → Client',                 date:'2026-10-30', weeks:19},
+      {phase:'Artwork/Content Phase', name:'All Initial Artwork Due',                         date:'2026-12-11', weeks:13},
+      {phase:'Artwork/Content Phase', name:'Allowance for 6 Wks Regulatory Revisions',       date:'2026-12-11', weeks:13},
+      {phase:'Artwork/Content Phase', name:'Final Approved Art',                              date:'2027-01-22', weeks:7},
+      {phase:'Artwork/Content Phase', name:'Graphic Layout Approval',                         date:'2027-01-29', weeks:6},
+      {phase:'Artwork/Content Phase', name:'Digital Content Due',                             date:'2027-02-12', weeks:4},
+      {phase:'Final Logistics',       name:'Literature Shipped to Visual',                    date:'2027-02-19', weeks:3},
+      {phase:'Final Logistics',       name:'Shipping to Event',                               date:'2027-02-26', weeks:2},
+      {phase:'Final Logistics',       name:'Event Installation',                              date:'2027-03-12', weeks:0},
     ]
   },
   aaaai: {
     key:'aaaai', label:'AAAAI 2027', installDate:'2027-02-12', color:'#10b981',
     milestones:[
-      {phase:'Design/Creative Phase', name:'Project Kickoff',                                    date:'2026-10-02', weeks:19},
-      {phase:'Design/Creative Phase', name:'Design & Estimate Approval',                         date:'2026-10-30', weeks:15},
-      {phase:'Artwork/Content Phase', name:'Engineering Elevations → Client',                    date:'2026-11-06', weeks:14},
-      {phase:'Artwork/Content Phase', name:'All Artwork Due (Design Update)',                    date:'2026-12-04', weeks:10},
-      {phase:'Artwork/Content Phase', name:'Regulatory Submission',                              date:'2026-12-11', weeks:9},
-      {phase:'Artwork/Content Phase', name:'Final Approved Art',                                 date:'2027-01-08', weeks:5},
-      {phase:'Artwork/Content Phase', name:'Graphic Layout Approval',                            date:'2027-01-15', weeks:4},
-      {phase:'Artwork/Content Phase', name:'Digital Content Due',                                date:'2027-01-15', weeks:4},
-      {phase:'Final Logistics',       name:'Literature Shipped to Visual',                       date:'2027-01-22', weeks:3},
-      {phase:'Final Logistics',       name:'Shipping to Event',                                  date:'2027-01-29', weeks:2},
-      {phase:'Final Logistics',       name:'Event Installation',                                 date:'2027-02-12', weeks:0},
+      {phase:'Design/Creative Phase', name:'Project Kickoff',                                 date:'2026-10-02', weeks:19},
+      {phase:'Design/Creative Phase', name:'Design & Estimate Approval',                      date:'2026-10-30', weeks:15},
+      {phase:'Artwork/Content Phase', name:'Engineering Elevations → Client',                 date:'2026-11-06', weeks:14},
+      {phase:'Artwork/Content Phase', name:'All Artwork Due (Design Update)',                 date:'2026-12-04', weeks:10},
+      {phase:'Artwork/Content Phase', name:'Regulatory Submission',                           date:'2026-12-11', weeks:9},
+      {phase:'Artwork/Content Phase', name:'Final Approved Art',                              date:'2027-01-08', weeks:5},
+      {phase:'Artwork/Content Phase', name:'Graphic Layout Approval',                         date:'2027-01-15', weeks:4},
+      {phase:'Artwork/Content Phase', name:'Digital Content Due',                             date:'2027-01-15', weeks:4},
+      {phase:'Final Logistics',       name:'Literature Shipped to Visual',                    date:'2027-01-22', weeks:3},
+      {phase:'Final Logistics',       name:'Shipping to Event',                               date:'2027-01-29', weeks:2},
+      {phase:'Final Logistics',       name:'Event Installation',                              date:'2027-02-12', weeks:0},
     ]
   },
   acaai: {
     key:'acaai', label:'ACAAI 2026', installDate:'2026-11-06', color:'#f59e0b',
     milestones:[
-      {phase:'Design/Creative Phase', name:'Project Kickoff',                                    date:'2026-07-22', weeks:19},
-      {phase:'Design/Creative Phase', name:'Design & Estimate Approval',                         date:'2026-07-31', weeks:15},
-      {phase:'Artwork/Content Phase', name:'Engineering Elevations → Client',                    date:'2026-08-07', weeks:14},
-      {phase:'Artwork/Content Phase', name:'All Artwork Due (Design Update)',                    date:'2026-09-04', weeks:10},
-      {phase:'Artwork/Content Phase', name:'Regulatory Submission',                              date:'2026-09-11', weeks:9},
-      {phase:'Artwork/Content Phase', name:'Final Approved Art',                                 date:'2026-10-02', weeks:5},
-      {phase:'Artwork/Content Phase', name:'Graphic Layout Approval',                            date:'2026-10-09', weeks:4},
-      {phase:'Artwork/Content Phase', name:'Digital Content Due',                                date:'2026-10-09', weeks:4},
-      {phase:'Final Logistics',       name:'Literature Shipped to Visual',                       date:'2026-10-16', weeks:3},
-      {phase:'Final Logistics',       name:'Shipping to Event',                                  date:'2026-10-23', weeks:2},
-      {phase:'Final Logistics',       name:'Event Installation',                                 date:'2026-11-06', weeks:0},
+      {phase:'Design/Creative Phase', name:'Project Kickoff',                                 date:'2026-07-22', weeks:15},
+      {phase:'Design/Creative Phase', name:'Design & Estimate Approval',                      date:'2026-07-31', weeks:14},
+      {phase:'Artwork/Content Phase', name:'Engineering Elevations → Client',                 date:'2026-08-07', weeks:13},
+      {phase:'Artwork/Content Phase', name:'All Artwork Due (Design Update)',                 date:'2026-09-04', weeks:9},
+      {phase:'Artwork/Content Phase', name:'Regulatory Submission',                           date:'2026-09-11', weeks:8},
+      {phase:'Artwork/Content Phase', name:'Final Approved Art',                              date:'2026-10-02', weeks:5},
+      {phase:'Artwork/Content Phase', name:'Graphic Layout Approval',                         date:'2026-10-09', weeks:4},
+      {phase:'Artwork/Content Phase', name:'Digital Content Due',                             date:'2026-10-09', weeks:4},
+      {phase:'Final Logistics',       name:'Literature Shipped to Visual',                    date:'2026-10-16', weeks:3},
+      {phase:'Final Logistics',       name:'Shipping to Event',                               date:'2026-10-23', weeks:2},
+      {phase:'Final Logistics',       name:'Event Installation',                              date:'2026-11-06', weeks:0},
     ]
   }
 };
 
-// Parse dates
 Object.values(EVENTS).forEach(ev=>{
   const[iy,im,id]=ev.installDate.split('-').map(Number);
   ev.installDateObj=new Date(iy,im-1,id);
@@ -366,7 +351,6 @@ function statusOf(diff){
   return 'upcoming';
 }
 
-// BANNERS
 function updateBanners(){
   Object.values(EVENTS).forEach(ev=>{
     document.getElementById('banner-'+ev.key).style.display=showEvents[ev.key]?'':'none';
@@ -375,9 +359,8 @@ function updateBanners(){
       d>=0?`${d} <span class="unit">days away</span>`:`<span style="color:var(--muted)">Completed</span>`;
     const next=ev.milestones.filter(m=>daysDiff(m.dateObj)>0).sort((a,b)=>a.dateObj-b.dateObj)[0];
     if(next){
-      const nd=daysDiff(next.dateObj);
       document.getElementById(ev.key+'-nn').textContent=next.name;
-      document.getElementById(ev.key+'-nd').innerHTML=`${nd} <span class="unit">days away</span>`;
+      document.getElementById(ev.key+'-nd').innerHTML=`${daysDiff(next.dateObj)} <span class="unit">days away</span>`;
     } else {
       document.getElementById(ev.key+'-nn').textContent='All milestones complete';
       document.getElementById(ev.key+'-nd').textContent='';
@@ -397,7 +380,6 @@ function getFiltered(){
   return all.sort((a,b)=>a.dateObj-b.dateObj);
 }
 
-// TIMELINE
 function renderTimeline(){
   const list=getFiltered();
   let html='', lastKey=null;
@@ -414,6 +396,7 @@ function renderTimeline(){
     else if(isToday)     dh=`<div class="tl-days today-c">TODAY</div>`;
     else                 dh=`<div class="tl-days ${dc}">${diff}</div><div class="tl-dl">days left</div>`;
 
+    const wksLabel = m.weeks > 0 ? ` · ${m.weeks} wks to event` : ' · Event day';
     html+=`
       <div class="tl-item ${m.event}-item ${status==='past'?'past':''} ${isToday?'today-item today-marker':''} ${status==='soon'?'soon':''}">
         <div class="tl-dot"></div>
@@ -421,7 +404,7 @@ function renderTimeline(){
           <span class="tl-etag ${m.event}">${EVENTS[m.event].label}</span>
           <div class="tl-phase">${m.phase}</div>
           <div class="tl-name">${m.name}${isToday?'<span class="today-badge">TODAY</span>':''}</div>
-          <div class="tl-date">${fmtShort(m.dateObj)}${m.weeks>0?' · '+m.weeks+' wks to event':' · Event day'}</div>
+          <div class="tl-date">${fmtShort(m.dateObj)}${wksLabel}</div>
         </div>
         <div class="tl-cd">${dh}</div>
       </div>`;
@@ -430,7 +413,6 @@ function renderTimeline(){
   document.getElementById('timelineContent').innerHTML=html;
 }
 
-// CALENDAR
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
@@ -466,7 +448,6 @@ function renderCalendar(){
 function calNav(dir){calMonth+=dir;if(calMonth<0){calMonth=11;calYear--;}if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
 function goToToday(){calYear=today.getFullYear();calMonth=today.getMonth();renderCalendar();}
 
-// CARDS
 function renderCards(){
   const list=getFiltered().sort((a,b)=>{
     const da=daysDiff(a.dateObj),db=daysDiff(b.dateObj);
@@ -496,7 +477,6 @@ function renderCards(){
   document.getElementById('cardsGrid').innerHTML=html||'<div style="color:var(--muted);padding:24px">No milestones match current filters.</div>';
 }
 
-// GANTT
 function renderGantt(){
   const list=Object.values(EVENTS).flatMap(ev=>showEvents[ev.key]?ev.milestones:[]).sort((a,b)=>a.dateObj-b.dateObj);
   if(!list.length){document.getElementById('ganttTable').innerHTML='<tr><td style="color:var(--muted);padding:20px">No data.</td></tr>';return;}
@@ -534,10 +514,9 @@ function renderGantt(){
   document.getElementById('ganttTable').innerHTML=html;
 }
 
-// CONTROLS
 function toggleEvent(key){
   const others=Object.keys(showEvents).filter(k=>k!==key);
-  if(showEvents[key] && others.every(k=>!showEvents[k])) return; // keep at least one
+  if(showEvents[key]&&others.every(k=>!showEvents[k])) return;
   showEvents[key]=!showEvents[key];
   document.getElementById('ev-'+key).classList.toggle('on',showEvents[key]);
   updateBanners(); renderAll();
@@ -555,7 +534,6 @@ function switchTab(name,e){
 }
 function renderAll(){renderTimeline();renderCalendar();renderCards();renderGantt();}
 
-// INIT
 updateBanners(); renderAll();
 const allUp=Object.values(EVENTS).flatMap(ev=>ev.milestones).filter(m=>daysDiff(m.dateObj)>=0).sort((a,b)=>a.dateObj-b.dateObj);
 if(allUp.length){calYear=allUp[0].dateObj.getFullYear();calMonth=allUp[0].dateObj.getMonth();renderCalendar();}
